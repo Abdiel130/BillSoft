@@ -34,8 +34,9 @@ class CustomException extends Error {
 
 /** Para Errores de Validación (400) */
 class ValidationException extends CustomException {
-    constructor(userMessage, logMessage = '') {
+    constructor(userMessage, errors = {}, logMessage = '') {
         super(userMessage, logMessage, 400, false);
+        this.errors = errors;
     }
 }
 

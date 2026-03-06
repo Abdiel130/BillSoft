@@ -1,5 +1,12 @@
 ## [Unreleased]
 
+## [0.1.1] - 2026-03-06
+
+### Added
+- Created `Validator` utility for schema-based request validation leveraging factory functions (SOLID principles).
+- Implemented comprehensive validation rules: `required`, `string`, `email`, `default`, `numeric`, `boolean`, `regex`, `array`, `inList`, `date`, `match`, `uuid`, and `object`.
+- Updated `ValidationException` to support detailed, field-level error messages via an `errors` object.
+
 ## [0.1.0] - 2026-03-05
 
 ### Added
