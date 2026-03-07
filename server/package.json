@@ -4,7 +4,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "db:generate": "drizzle-kit generate --config=./db/drizzle.config.js",
+    "db:push": "drizzle-kit push --config=./db/drizzle.config.js",
+    "db:studio": "drizzle-kit studio --config=./db/drizzle.config.js",
+    "db:migrate": "node db/migrate.js"
   },
   "keywords": [],
   "author": "",
@@ -13,10 +17,13 @@
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
+    "drizzle-orm": "^0.45.1",
     "express": "^5.2.1",
+    "mysql2": "^3.19.0",
     "winston": "^3.19.0"
   },
   "devDependencies": {
+    "drizzle-kit": "^0.31.9",
     "nodemon": "^3.1.14"
   }
 }

@@ -1,5 +1,23 @@
 ## [Unreleased]
 
+## [0.2.0] - 2026-03-07
+
+### Added
+- Created diagram of the database schema.
+- Created `server/db/migrate.js` script to manually execute Drizzle migrations against MySQL.
+- Added `db:migrate` script to `package.json`.
+
+### Changed
+- Migrated database schema and Drizzle ORM configuration from PostgreSQL to MySQL.
+- Switched database driver dependencies: replaced `pg` with `mysql2` and `drizzle-orm/mysql2`.
+- Updated `server/db/schema.js` to utilize MySQL-specific syntax (`mysqlTable`, `int`, `mysqlEnum`, `autoincrement()`).
+- Upgraded the database connection pool in `server/db/index.js` with stability configurations (`connectionLimit`, `enableKeepAlive`, etc.).
+- Adjusted `drizzle.config.js` to explicitly state `dialect: "mysql"` and properly pass `url` credentials.
+- Updated `package.json` drizzle scripts to accurately rely on the `--config=./db/drizzle.config.js` flag and removed hardcoded driver suffixes.
+
+### Fixed
+- Fixed typo in `server/db/schema.js` replacing undefined export `usuario` with `user`.
+
 ## [0.1.1] - 2026-03-06
 
 ### Added
