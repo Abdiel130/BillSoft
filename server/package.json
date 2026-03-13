@@ -5,9 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --inspect=0.0.0.0:9229 index.js",
-    "db:generate": "drizzle-kit generate --config=./db/drizzle.config.js",
-    "db:push": "drizzle-kit push --config=./db/drizzle.config.js",
-    "db:studio": "drizzle-kit studio --config=./db/drizzle.config.js",
+    "db:generate": "drizzle-kit generate --config=./config/drizzle.config.js",
+    "db:push": "drizzle-kit push --config=./config/drizzle.config.js",
+    "db:studio": "drizzle-kit studio --config=./config/drizzle.config.js",
     "db:migrate": "node db/migrate.js",
     "seed:user": "node db/seed/seed-user.js"
   },
@@ -23,6 +23,8 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.19.0",
+    "puppeteer": "^24.39.1",
+    "uuid": "^13.0.0",
     "winston": "^3.19.0",
     "winston-daily-rotate-file": "^5.0.0"
   },

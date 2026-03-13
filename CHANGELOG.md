@@ -1,5 +1,16 @@
 ## [Unreleased]
 
+## [0.4.1] - 2026-03-13
+
+### Added
+- Created `server/errors` directory to centralize custom exception classes.
+- Added `puppeteer` and `uuid` dependencies to the server.
+
+### Changed
+- Moved `drizzle.config.js` to `server/config/` and updated database scripts in `package.json`.
+- Relocated `exceptions.js` from `server/utils/` to `server/errors/`.
+- Updated all relative imports of `ValidationException` and `UnauthorizedException` across the server.
+
 ## [0.4.0] - 2026-03-12
 
 ### Added

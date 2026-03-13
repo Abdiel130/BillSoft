@@ -1,4 +1,4 @@
-const { ValidationException } = require('./exceptions');
+const { ValidationException } = require('../errors/exceptions');
 
 /**
  * Servicio Validator

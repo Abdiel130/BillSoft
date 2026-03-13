@@ -1,21 +1,28 @@
 FROM node:20-alpine
 
-# Creamos la carpeta y le damos permisos al usuario 'node' (UID 1000)
-RUN mkdir -p /usr/src/app && chown -R node:node /usr/src/app
+# 1. Instalamos Chromium y sus dependencias para Alpine
+RUN apk add --no-cache \
+      chromium \
+      nss \
+      freetype \
+      harfbuzz \
+      ca-certificates \
+      ttf-freefont
 
+# 2. Le decimos a Puppeteer que NO descargue Chromium (ahorra tiempo y peso)
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+# 3. Le indicamos la ruta del Chromium que acabamos de instalar
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+RUN mkdir -p /usr/src/app && chown -R node:node /usr/src/app
 WORKDIR /usr/src/app
 
-# Cambiamos al usuario sin privilegios root
 USER node
 
-# Copiamos los archivos de dependencias (si existen)
 COPY --chown=node:node package*.json ./
 
-# Instalamos dependencias
 RUN if [ -f package.json ]; then npm install; fi
 
-# Exponemos el puerto de Express
 EXPOSE 3000
 
-# Comando por defecto (asumiendo que uses nodemon o node nativo con --watch)
 CMD ["npm", "run", "dev"]

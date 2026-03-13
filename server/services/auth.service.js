@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const { db } = require('../db/index');
 const { user } = require('../db/schema');
 const { eq } = require('drizzle-orm');
-const { UnauthorizedException } = require('../utils/exceptions');
+const { UnauthorizedException } = require('../errors/exceptions');
 
 class AuthService {
     async login(username, password) {
