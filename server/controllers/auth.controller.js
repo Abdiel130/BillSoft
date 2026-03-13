@@ -1,44 +1,26 @@
 const Validator = require('../utils/Validator');
+const authService = require('../services/auth.service');
+const API = require('../services/response.service');
 
 class AuthController {
-    login = async (req, res, next) => {
-        try {
-            // Ejemplo de uso del Validator
-            const validator = new Validator({
-                email: [Validator.required(), Validator.email(), Validator.string({ max: 255 })],
-                password: [Validator.required(), Validator.string({ min: 6 })],
-                // validate an optional default field to test
-                rememberMe: [Validator.default(false)]
-            });
+    login = async (req, res) => {
+        const validator = new Validator({
+            username: [Validator.required(), Validator.string({ max: 100 })],
+            password: [Validator.required(), Validator.string({ min: 6 })],
+            rememberMe: [Validator.default(false)]
+        });
+        const validData = validator.run(req.body);
 
-            // validate run throws ValidationException si hay errores, la cual será atrapada por catch
-            const validData = validator.run(req.body);
+        const { token, user } = await authService.login(validData.username, validData.password);
 
-            return res.json({
-                success: true,
-                message: 'Login exitoso (ruta pública validada).',
-                token: 'este_es_un_token_jwt_simulado',
-                user: { email: validData.email, role: 'admin', rememberMe: validData.rememberMe }
-            });
-        } catch (error) {
-            // Pasamos el error al manejador global (que detectará ValidationException)
-            next(error);
-        }
+        return API.success(res, 'Login exitoso.', { token, user, rememberMe: validData.rememberMe });
     }
 
     profile = async (req, res) => {
-        try {
-            return res.json({
-                success: true,
-                message: 'Perfil de usuario obtenido correctamente. Has pasado por el middleware (ruta privada).',
-                user: {
-                    name: 'Usuario Test',
-                    role: 'Administrador'
-                }
-            });
-        } catch (error) {
-            return res.status(500).json({ success: false, message: 'Error al cargar perfil.' });
-        }
+        return API.success(res, 'Perfil de usuario obtenido correctamente. Has pasado por el middleware (ruta privada).', {
+            name: 'Usuario Test',
+            role: 'Administrador'
+        });
     }
 }
 

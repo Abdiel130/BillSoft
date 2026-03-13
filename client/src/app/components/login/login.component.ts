@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { InputComponent } from '../generics/input/input.component';
 import { ButtonComponent } from '../generics/button/button.component';
+import { AuthService } from '../../core/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-login',
@@ -16,9 +18,13 @@ export class LoginComponent {
     isLoading = signal(false);
     errorMessage = signal<string | null>(null);
 
-    constructor(private fb: FormBuilder) {
+    constructor(
+        private fb: FormBuilder,
+        private authService: AuthService,
+        private router: Router
+    ) {
         this.loginForm = this.fb.group({
-            email: ['', [Validators.required, Validators.email]],
+            username: ['', [Validators.required]],
             password: ['', [Validators.required, Validators.minLength(6)]],
             rememberMe: [false]
         });
@@ -32,6 +38,7 @@ export class LoginComponent {
     onSubmit() {
         if (this.loginForm.invalid) {
             this.loginForm.markAllAsTouched();
+            this.errorMessage.set('Por favor, complete correctamente los campos obligatorios.');
             return;
         }
 
@@ -40,11 +47,15 @@ export class LoginComponent {
 
         const credentials = this.loginForm.value;
 
-        // Simulate API request
-        setTimeout(() => {
-            this.isLoading.set(false);
-            // Let's pretend a successful login for now, or you could navigate
-            console.log('Login successful with:', credentials);
-        }, 1500);
+        this.authService.login(credentials.username, credentials.password).subscribe({
+            next: (res) => {
+                this.isLoading.set(false);
+                this.router.navigate(['/dashboard']);
+            },
+            error: (err) => {
+                this.isLoading.set(false);
+                this.errorMessage.set(err.error?.message || 'Error al iniciar sesión. Inténtelo de nuevo.');
+            }
+        });
     }
 }

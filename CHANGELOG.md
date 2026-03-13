@@ -1,5 +1,20 @@
 ## [Unreleased]
 
+## [0.3.0] - 2026-03-12
+
+### Added
+- Implemented `AuthService` with JWT generation and bcrypt password hashing.
+- Created `AuthController` for authentication and user profile management.
+- Implemented `seed-user.js` script to generate development users.
+- Created frontend `AuthService` for JWT storage and session handling.
+- Implemented `AuthGuard` to protect private portal routes.
+- Created `AuthInterceptor` to automatically inject JWT in HTTP headers.
+- Integrated login components with backend API for full authentication flow.
+
+### Changed
+- Refactored `server/routes/web.js` to separate public and authenticated routes.
+- Updated `app.routes.ts` to include route protection via guards.
+
 ## [0.2.0] - 2026-03-07
 
 ### Added
