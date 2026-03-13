@@ -1,5 +1,20 @@
 ## [Unreleased]
 
+## [0.4.0] - 2026-03-12
+
+### Added
+- Created `authMiddleware` for secure session management.
+- Implemented `PortalLayout` and `Sidebar` for main application structure.
+- Created base components for `Clients`, `Dashboard`, `Invoices`, `Reports`, `Settings`, and `Users`.
+- Integrated `Lucide` icons and `Tailwind CSS` into the Angular project.
+- Created `proxy.conf.json` for API request proxying and `test_db.js` for DB testing.
+
+### Changed
+- Updated `docker-compose.yml` with named volumes and debug port configuration.
+- Integrated `cors` middleware in `server/index.js` for API access.
+- Updated `app.config.ts` with global interceptors and icon providers.
+- Refactored project build configuration (`angular.json`, `package.json`, `tailwind.config.js`, `postcss.config.js`).
+
 ## [0.3.0] - 2026-03-12
 
 ### Added

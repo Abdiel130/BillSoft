@@ -4,6 +4,9 @@ module.exports = {
     out: "./drizzle",
     dialect: "mysql",
     dbCredentials: {
-        url: process.env.DATABASE_URL,
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASS,
+        database: process.env.DB_NAME,
     },
 };

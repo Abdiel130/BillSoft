@@ -1,0 +1,4 @@
+/* Main input for tailwind CLI compilation */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

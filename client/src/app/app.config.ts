@@ -1,8 +1,18 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { authInterceptor } from './core/auth.interceptor';
+import { LucideAngularModule, LayoutDashboard, Users, BarChart2, FileText, UserCog, Settings, ChevronDown, ChevronRight, LogOut, Menu, Search, X } from 'lucide-angular';
 
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideBrowserGlobalErrorListeners(), provideRouter(routes)],
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideRouter(routes),
+    provideHttpClient(withInterceptors([authInterceptor])),
+    provideAnimations(),
+    importProvidersFrom(LucideAngularModule.pick({ LayoutDashboard, Users, BarChart2, FileText, UserCog, Settings, ChevronDown, ChevronRight, LogOut, Menu, Search, X }))
+  ],
 };

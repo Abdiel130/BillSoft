@@ -3,7 +3,10 @@ const mysql = require('mysql2/promise');
 require('dotenv').config();
 
 const poolConnection = mysql.createPool({
-    uri: process.env.DATABASE_URL,
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASS || '',
+    database: process.env.DB_NAME || 'bill_soft',
     waitForConnections: true,
     connectionLimit: 10,
     maxIdle: 10,

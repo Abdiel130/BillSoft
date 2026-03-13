@@ -1,17 +1,22 @@
+const jwt = require('jsonwebtoken');
+const API = require('../services/response.service');
+
 const authMiddleware = (req, res, next) => {
-    // TODO: Implementar la lógica de validación de sesión o token (ej. JWT)
-    console.log('[AuthMiddleware] Verificando acceso a ruta privada protegida:', req.path);
+    const authHeader = req.headers.authorization;
 
-    const isAuthenticated = true;
-
-    if (isAuthenticated) {
-        return next();
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return API.error(res, 'No autorizado. Se requiere un token de sesión válido.', 401);
     }
 
-    return res.status(401).json({
-        success: false,
-        message: 'No autorizado. La sesión no es válida, no existe o ha expirado.'
-    });
+    const token = authHeader.split(' ')[1];
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+        return next();
+    } catch (error) {
+        return API.error(res, 'No autorizado. La sesión no es válida, no existe o ha expirado.', 401);
+    }
 };
 
 module.exports = authMiddleware;
