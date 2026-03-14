@@ -1,0 +1,18 @@
+<div class="flex p-1 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 w-fit">
+  @for (option of options(); track option.value) {
+    <label class="cursor-pointer relative">
+      
+      <input 
+        type="radio" 
+        [formControl]="control()" 
+        value="{{ option.value }}"
+        name="{{ uniqueName }}"
+        class="peer sr-only">
+        
+      <div class="px-6 py-2.5 rounded-lg text-sm font-medium text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 peer-checked:bg-primary peer-checked:text-white dark:peer-checked:bg-primary dark:peer-checked:text-white peer-checked:shadow-md peer-checked:font-semibold transition-all duration-200 select-none">
+        {{ option.label }}
+      </div>
+      
+    </label>
+  }
+</div>

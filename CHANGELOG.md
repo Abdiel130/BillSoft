@@ -1,5 +1,23 @@
 ## [Unreleased]
 
+## [0.5.0] - 2026-03-13
+
+### Added
+- Created `ModalComponent` and `RadioButtonComponent` as generic UI components.
+- Implemented `SATService` on the frontend for interaction with SAT scraping features.
+- Added `SatSelectors`, `SatController`, `SatRoute`, and `SatScraperService` on the backend for automated SAT portal interaction.
+- Created `SatErrors` for specific captcha and session handling.
+- Added `repository.controller.js` to the server.
+
+### Changed
+- Refactored `RouterService` to support traditional Express routers and `apiResource` simultaneously.
+- Standardized all server responses using `ResponseService`.
+- Moved `MenuService` to the `components/menu` directory and updated all internal references.
+- Updated session expiration configuration to use seconds (defaulting to 5 minutes) in `example.env`.
+- Translated variable and function names from Spanish to English across the codebase while maintaining Spanish logs/messages.
+- Enhanced `MenuItemComponent` and `RadioButtonComponent` UI with consistent system theme colors and animations.
+- Fixed synthetic animation properties in the generic Modal component.
+
 ## [0.4.2] - 2026-03-13
 
 ### Changed

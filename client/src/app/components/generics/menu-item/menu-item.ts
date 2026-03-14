@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { LucideAngularModule } from 'lucide-angular';
-import { MenuItem as IMenuItem, MenuState, Menu } from '../../../core/services/menu';
+import { MenuItem as IMenuItem, MenuState, Menu } from '../../menu/menu';
 
 @Component({
   selector: 'app-menu-item',

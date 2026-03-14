@@ -1,0 +1,27 @@
+@if (isOpen()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+    <div 
+      @backdropFade
+      class="fixed inset-0 bg-gray-900/30 dark:bg-black/50 backdrop-blur-sm" 
+      (click)="close()">
+    </div>
+
+    <div 
+      @islandScale
+      [class]="'relative w-full bg-white dark:bg-gray-900 rounded-[2rem] shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col ' + width()">
+      
+      <div class="flex items-center justify-between px-6 pt-6 pb-4">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">{{ title() }}</h3>
+        <button 
+          (click)="close()" 
+          class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50">
+          <lucide-icon name="X" class="w-4 h-4"></lucide-icon>
+        </button>
+      </div>
+
+      <div class="px-6 pb-6">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+}

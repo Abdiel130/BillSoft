@@ -3,7 +3,7 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 const AuthController = require('../controllers/auth.controller');
 const UserController = require('../controllers/user.controller');
-
+const SatRoute       = require('./sat.route');
 // =========================================================
 // RUTAS PÚBLICAS
 // =========================================================
@@ -17,6 +17,7 @@ Route.group({ prefix: '/api' }, () => {
 Route.group({ prefix: '/api', middlewares: [authMiddleware] }, () => {
     Route.get('/auth/profile', AuthController.profile);
     Route.apiResource('/users', UserController);
+    Route.useRouter('/sat', SatRoute)
 });
 
 // Exportamos nuestro objeto router ya procesado hacia el index.js

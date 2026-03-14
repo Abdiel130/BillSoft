@@ -25,12 +25,19 @@ class API {
      * @param {Object} res - Express response object
      * @param {string} message - Mensaje de error para el Frontend
      * @param {number} statusCode - Código de Error HTTP
+     * @param {any} data - Data adicional del error (opcional)
      */
-    static error(res, message, statusCode = 400) {
-        return res.status(statusCode).json({
+    static error(res, message, statusCode = 400, data = null) {
+        const responseData = {
             success: false,
             message: message
-        });
+        };
+
+        if (data !== undefined && data !== null) {
+            responseData.data = data;
+        }
+
+        return res.status(statusCode).json(responseData);
     }
 
     // Sugar Sintax (Atajos rápidos) para Success:

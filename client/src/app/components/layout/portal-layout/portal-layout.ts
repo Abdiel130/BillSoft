@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Sidebar } from '../sidebar/sidebar';
-import { Menu } from '../../../core/services/menu';
+import { Menu } from '../../menu/menu';
 import { LucideAngularModule } from 'lucide-angular';
 
 @Component({

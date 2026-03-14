@@ -1,28 +1,30 @@
+const API = require('../services/response.service');
+
 class UserController {
-    // Definimos como propiedades de clase con Arrow Functions para mantener el context("this") al referenciar la función.
+    // Defined as class properties with Arrow Functions to preserve the context ("this") when referencing the function.
     index = async (req, res) => {
-        return res.json({ success: true, message: 'Obteniendo toda la lista de usuarios.' });
+        return API.success(res, 'Obteniendo toda la lista de usuarios.');
     }
 
     show = async (req, res) => {
         const { id } = req.params;
-        return res.json({ success: true, message: `Mostrando al usuario modelo con ID ${id}.` });
+        return API.success(res, `Mostrando al usuario modelo con ID ${id}.`);
     }
 
     store = async (req, res) => {
-        return res.json({ success: true, message: 'Nuevo usuario creado correctamente.' });
+        return API.created(res, 'Nuevo usuario creado correctamente.');
     }
 
     update = async (req, res) => {
         const { id } = req.params;
-        return res.json({ success: true, message: `El usuario ${id} fue actualizado correctamente.` });
+        return API.success(res, `El usuario ${id} fue actualizado correctamente.`);
     }
 
     destroy = async (req, res) => {
         const { id } = req.params;
-        return res.json({ success: true, message: `El usuario ${id} ha sido borrado exitosamente.` });
+        return API.success(res, `El usuario ${id} ha sido borrado exitosamente.`);
     }
 }
 
-// Instanciamos
+// Instantiate
 module.exports = new UserController();

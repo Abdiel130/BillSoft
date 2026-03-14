@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
-import { Menu } from '../../../core/services/menu';
+import { Menu } from '../../menu/menu';
 import { AuthService } from '../../../core/services/auth.service';
 import { MenuItem } from '../../generics/menu-item/menu-item';
 import { FormsModule } from '@angular/forms';

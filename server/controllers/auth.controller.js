@@ -24,5 +24,5 @@ class AuthController {
     }
 }
 
-// Expulsamos una instancia de la clase, así en el router puedes usar solo la referencia y conservar el this.
+// Export a class instance so the router can use just the reference and preserve `this`.
 module.exports = new AuthController();
