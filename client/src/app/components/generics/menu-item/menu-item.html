@@ -2,19 +2,24 @@
   <!-- Parent Item: Route link or group header -->
   @if (item.route) {
     <a [routerLink]="item.route"
-       routerLinkActive="bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
+       routerLinkActive="active-item"
        [routerLinkActiveOptions]="{exact: false}"
-       class="flex items-center gap-3 px-3 py-2.5 cursor-pointer transition-all duration-200 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white group relative"
+       class="menu-link group relative flex items-center gap-3 px-3 py-2.5 cursor-pointer rounded-xl transition-all duration-300 overflow-hidden"
        [class.justify-center]="menuState === 'compact'">
       
-      @if (item.icon) {
-        <lucide-icon [name]="item.icon" class="w-5 h-5 flex-shrink-0 transition-colors"></lucide-icon>
-      }
+      <!-- Fondo Deslizable -->
+      <div class="active-pill absolute inset-0 bg-primary opacity-0 z-0"></div>
       
-      @if (menuState === 'full') {
-        <span class="flex-1 font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis">{{ item.label }}</span>
-      }
-      
+      <div class="relative z-10 flex items-center gap-3 w-full" [class.justify-center]="menuState === 'compact'">
+        @if (item.icon) {
+          <lucide-icon [name]="item.icon" class="w-5 h-5 flex-shrink-0 transition-all duration-300"></lucide-icon>
+        }
+        
+        @if (menuState === 'full') {
+          <span class="flex-1 font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis transition-colors duration-300">{{ item.label }}</span>
+        }
+      </div>
+
       <!-- Tooltip for compact mode -->
       @if (menuState === 'compact') {
         <div class="absolute left-14 bg-gray-900 text-white text-xs px-2.5 py-1.5 rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50 font-medium">

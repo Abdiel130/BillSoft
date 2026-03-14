@@ -1,0 +1,57 @@
+/* Estilo base del link */
+.menu-link {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  position: relative;
+  z-index: 1;
+}
+
+/* El fondo que se activa con efecto de deslizamiento */
+.active-pill {
+  transform: translateY(100%) scaleY(0.5); /* Inicia fuera de vista por debajo */
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 0.2s ease;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* Estado Activo: El fondo se desliza a su posición */
+.active-item .active-pill {
+  opacity: 1;
+  transform: translateY(0) scaleY(1);
+  box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.35);
+}
+
+/* Cambio de color de contenido al estar activo */
+.active-item {
+  color: white !important;
+}
+
+.active-item lucide-icon {
+  color: white;
+  transform: scale(1.1);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+/* Hover suave para elementos no activos */
+.menu-link:hover:not(.active-item) {
+  background-color: rgba(37, 99, 235, 0.05);
+  color: var(--color-primary);
+  transform: translateX(4px);
+}
+
+:host-context(.dark) .menu-link:hover:not(.active-item) {
+  background-color: rgba(255, 255, 255, 0.03);
+  color: white;
+}
+
+/* Ajuste para modo oscuro */
+:host-context(.dark) .active-pill {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #3b82f6 100%);
+}
+
+/* Asegurar transiciones suaves */
+.menu-link, .menu-link *, lucide-icon {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}

@@ -1,5 +1,12 @@
 ## [Unreleased]
 
+## [0.4.2] - 2026-03-13
+
+### Changed
+- Updated `menu-item` component to use the system's primary color theme for selected items.
+- Implemented a professional sliding background animation ("pill drop") for the active menu item.
+- Added smooth transitions and hover effects to sidebar navigation elements for a premium feel.
+
 ## [0.4.1] - 2026-03-13
 
 ### Added
