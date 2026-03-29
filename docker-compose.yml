@@ -19,6 +19,7 @@ services:
     container_name: facturas_server
     volumes:
       - ./server:/usr/src/app
+      - ./server/logs:/usr/src/app/logs
       - server_node_modules:/usr/src/app/node_modules
     ports:
       - "3000:3000"

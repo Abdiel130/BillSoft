@@ -1,1 +1,118 @@
-<p>clientes works!</p>
+<div class="clients-page">
+  <!-- TABLE -->
+  <app-table
+    #tableRef
+    [config]="tableConfig"
+    (onCreate)="openCreate()"
+    (onEdit)="handleEdit($event)"
+    (onDelete)="handleDelete($event)"
+  />
+
+  <!-- CREATE MODAL -->
+  <app-modal
+    [isOpen]="createModalOpen()"
+    title="Nueva Empresa"
+    width="max-w-lg"
+    (onClose)="closeCreate()"
+  >
+    <form class="create-form" (ngSubmit)="submitCreate()" [formGroup]="createForm">
+
+      <!-- RFC -->
+      <div class="form-group">
+        <label class="form-label">RFC <span class="required">*</span></label>
+        <input
+          class="form-input"
+          type="text"
+          placeholder="Ej. XAXX010101000"
+          formControlName="rfc"
+        />
+        @if (createForm.controls['rfc'].invalid && createForm.controls['rfc'].touched) {
+          <span class="form-error">RFC inválido (12–13 caracteres requeridos)</span>
+        }
+      </div>
+
+      <!-- Razón Social -->
+      <div class="form-group">
+        <label class="form-label">Razón Social <span class="required">*</span></label>
+        <input
+          class="form-input"
+          type="text"
+          placeholder="Nombre o razón social"
+          formControlName="legalName"
+        />
+        @if (createForm.controls['legalName'].invalid && createForm.controls['legalName'].touched) {
+          <span class="form-error">La razón social es requerida</span>
+        }
+      </div>
+
+      <!-- Row: CP + Régimen -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Código Postal <span class="required">*</span></label>
+          <input
+            class="form-input"
+            type="text"
+            placeholder="12345"
+            formControlName="zipCode"
+            maxlength="6"
+          />
+          @if (createForm.controls['zipCode'].invalid && createForm.controls['zipCode'].touched) {
+            <span class="form-error">C.P. inválido</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Régimen Fiscal</label>
+          <input
+            class="form-input"
+            type="text"
+            placeholder="Clave SAT (ej. 601)"
+            formControlName="taxRegimeId"
+            maxlength="3"
+          />
+        </div>
+      </div>
+
+      <!-- Row: Alias + Tipo -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Alias</label>
+          <input
+            class="form-input"
+            type="text"
+            placeholder="Nombre corto (opcional)"
+            formControlName="nickname"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tipo <span class="required">*</span></label>
+          <select class="form-input" formControlName="type">
+            <option value="CLIENT">Cliente</option>
+            <option value="EXTERNAL">Externo</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Error global -->
+      @if (createError()) {
+        <div class="form-error-banner">{{ createError() }}</div>
+      }
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <app-button
+          variant="ghost"
+          (onClick)="closeCreate()"
+          label="Cancelar"
+        />
+        <app-button
+          type="submit"
+          variant="primary"
+          [loading]="createLoading()"
+          label="Crear Empresa"
+        />
+      </div>
+    </form>
+  </app-modal>
+</div>

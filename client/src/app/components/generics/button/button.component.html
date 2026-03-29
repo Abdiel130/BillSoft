@@ -1,8 +1,10 @@
-<button [type]="type()" [class]="'btn btn-' + variant()" [class.full-width]="fullWidth()"
+<button [type]="type()" [class]="'btn btn-' + variant() + ' btn-' + size()" [class.full-width]="fullWidth()"
     [disabled]="disabled() || loading()" (click)="handleClick($event)">
     <div class="btn-content" [class.invisible]="loading()">
         <ng-content></ng-content>
-        {{ label() }}
+        @if (label()) {
+            <span>{{ label() }}</span>
+        }
     </div>
 
     <div class="loader-container" *ngIf="loading()">

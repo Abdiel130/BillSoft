@@ -12,19 +12,19 @@ import { authGuard } from './core/auth.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
-    { path: 'login', component: LoginComponent },
+    { path: 'login', component: LoginComponent, title: 'Login' },
     { 
         path: '', 
         component: PortalLayout, 
         canActivate: [authGuard],
         children: [
-            { path: 'dashboard', component: Dashboard },
-            { path: 'clients', component: Clients },
-            { path: 'reports/sales', component: Sales },
-            { path: 'reports/purchases', component: Purchases },
-            { path: 'invoices', component: Invoices },
-            { path: 'users', component: Users },
-            { path: 'settings', component: Settings }
+            { path: 'dashboard', component: Dashboard, title: 'Dashboard' },
+            { path: 'clients', component: Clients, title: 'Clientes' },
+            { path: 'reports/sales', component: Sales, title: 'Reporte de Ventas' },
+            { path: 'reports/purchases', component: Purchases, title: 'Reporte de Compras' },
+            { path: 'invoices', component: Invoices, title: 'Facturación' },
+            { path: 'users', component: Users, title: 'Usuarios' },
+            { path: 'settings', component: Settings, title: 'Configuración' }
         ]
     }
 ];

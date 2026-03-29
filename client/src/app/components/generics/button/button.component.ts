@@ -9,18 +9,19 @@ import { CommonModule } from '@angular/common';
     styleUrl: './button.component.css'
 })
 export class ButtonComponent {
-    label = input.required<string>();
+    label = input<string>('');
     type = input<'button' | 'submit'>('button');
-    variant = input<'primary' | 'secondary' | 'outline'>('primary');
+    variant = input<'primary' | 'secondary' | 'outline' | 'danger' | 'ghost' | 'success' | 'warning' | 'glass'>('primary');
+    size = input<'sm' | 'md' | 'lg'>('md');
     disabled = input<boolean>(false);
     loading = input<boolean>(false);
     fullWidth = input<boolean>(false);
 
-    onClick = output<void>();
+    onClick = output<Event>();
 
     handleClick(event: Event) {
         if (!this.disabled() && !this.loading()) {
-            this.onClick.emit();
+            this.onClick.emit(event);
         }
     }
 }

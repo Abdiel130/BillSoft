@@ -1,9 +1,10 @@
 const Route = require('../services/router.service');
 const authMiddleware = require('../middlewares/auth.middleware');
 
-const AuthController = require('../controllers/auth.controller');
-const UserController = require('../controllers/user.controller');
-const SatRoute       = require('./sat.route');
+const AuthController      = require('../controllers/auth.controller');
+const UserController      = require('../controllers/user.controller');
+const CompaniesController = require('../controllers/companies.controller');
+const SatRoute            = require('./sat.route');
 // =========================================================
 // RUTAS PÚBLICAS
 // =========================================================
@@ -17,6 +18,7 @@ Route.group({ prefix: '/api' }, () => {
 Route.group({ prefix: '/api', middlewares: [authMiddleware] }, () => {
     Route.get('/auth/profile', AuthController.profile);
     Route.apiResource('/users', UserController);
+    Route.apiResource('/companies', CompaniesController);
     Route.useRouter('/sat', SatRoute)
 });
 

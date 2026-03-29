@@ -12,7 +12,7 @@ class SatScraperService {
 
     async init() {
         Logger.info(`Iniciando navegador SAT y cargando: ${selectors.page}`);
-        
+
         try {
             this.browser = await puppeteer.launch({
                 headless: 'new',
@@ -20,22 +20,23 @@ class SatScraperService {
                 args: [
                     '--no-sandbox',
                     '--disable-setuid-sandbox',
-                    '--disable-dev-shm-usage'
+                    '--disable-dev-shm-usage',
+                    '--window-size=1920,1080'
                 ]
             });
             this.page = await this.browser.newPage();
-        
-            
-            const response = await this.page.goto(selectors.page, { 
-                waitUntil: 'networkidle2', 
-                timeout: 40000 
+            await this.page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
+
+            const response = await this.page.goto(selectors.page, {
+                waitUntil: 'load',
+                timeout: 40000
             });
             if (!response || !response.ok()) {
                 const status = response ? response.status() : 'No response';
                 throw new SatNavigationError('Error de conexión con el portal del SAT.', `Status ${status} al cargar ${selectors.page}`);
             }
             Logger.info(`Página cargada exitosamente: ${this.page.url()}`);
-        } catch (error) { throw new SatNavigationError('Fallo inesperado al conectar con el SAT.', error.message);}
+        } catch (error) { throw new SatNavigationError('Fallo inesperado al conectar con el SAT.', error.message); }
 
         try {
             await this.page.waitForSelector(selectors.login.captchaImage, { timeout: 10000 });
@@ -44,7 +45,7 @@ class SatScraperService {
             const isCorrect = captchaSrc.includes('base64,');
 
             if (!isCorrect) throw new CaptchaError('Contenido de captcha vacío o inválido.', `Fallo al extraer src del selector ${selectors.login.captchaImage}. Captcha obtenida: ${captchaSrc}`);
-            
+
             Logger.info('Captcha extraído correctamente.');
             return captchaSrc;
 
@@ -52,19 +53,19 @@ class SatScraperService {
     }
 
     async loginAndContinue(rfc, ciec, captchaText, actionParams) {
-        Logger.info(`Intentando login SAT para RFC: ${rfc}`);
-        
         try {
             await this.page.type(selectors.login.rfcInput, rfc);
             await this.page.type(selectors.login.ciecInput, ciec);
             await this.page.type(selectors.login.captchaInput, captchaText);
-            
-            Logger.info('Formulario de acceso enviado.');
-            await this.page.click(selectors.login.submitBtn);
 
-            // Esperar navegación con timeout razonable
-            await this.page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 35000 });
+            Logger.info('Formulario de acceso enviado. Esperando redirección...');
             
+            // Usamos Promise.all para capturar la navegación del login
+            await Promise.all([
+                this.page.waitForNavigation({ waitUntil: 'load', timeout: 35000 }),
+                this.page.click(selectors.login.submitBtn)
+            ]);
+
             const currentUrl = this.page.url();
             Logger.info(`Navegación post-login completada. URL actual: ${currentUrl}`);
 
@@ -77,11 +78,11 @@ class SatScraperService {
                     return errEl ? errEl.innerText.trim() : null;
                 });
 
-                Logger.warn('El login no fue exitoso, permanecemos en la página de acceso.', { satMessage: errorMessage });
-                
-                const newCaptcha = await this.init(); 
+                Logger.error('El login no fue exitoso, permanecemos en la página de acceso.', { satMessage: errorMessage });
+
+                const newCaptcha = await this.init();
                 throw new CaptchaError(
-                    errorMessage || 'Credenciales o captcha incorrectos.', 
+                    errorMessage || 'Credenciales o captcha incorrectos.',
                     `Login fallido en ${currentUrl}. RFC: ${rfc}`,
                     newCaptcha
                 );
@@ -96,17 +97,30 @@ class SatScraperService {
             return await this.requestPackage(actionParams);
 
         } catch (error) {
-            if (error.isCustomException) throw error;
             throw new SatNavigationError('Ocurrió un error al procesar el acceso.', error.message);
         }
     }
 
     async requestPackage(params) {
         Logger.info('Iniciando solicitud de paquete de folios...', { type: params.type });
-        
+
         const menuSelector = params.type === 'issued' ? selectors.menu.issued : selectors.menu.received;
-        await this.page.click(menuSelector);
-        await this.page.waitForNavigation({ waitUntil: 'networkidle2' });
+        // Verificamos si el elemento existe en el DOM
+        const element = await this.page.$(menuSelector);
+        if (!element) throw new SatNavigationError('No se encontró el menú de consulta.');
+        
+        await this.page.waitForSelector(menuSelector, { visible: true, timeout: 15000 });
+        
+        Logger.info(`Haciendo click en el menú y esperando la carga de la página de consulta...`);
+
+        await Promise.all([
+            this.page.waitForNavigation({ waitUntil: 'load', timeout: 45000 }),
+            this.page.click(menuSelector)
+        ]);
+
+        // Aseguramos que la siguiente pantalla esté operativa esperando un selector clave (Fecha Inicial)
+        await this.page.waitForSelector(selectors.search.startDate, { visible: true, timeout: 20000 });
+        Logger.info('Página de consulta cargada correctamente.');
 
         // ... Lógica de búsqueda ...
         await this.page.click(selectors.search.btnSearch);
@@ -116,9 +130,9 @@ class SatScraperService {
 
         const alert = await this.page.waitForSelector(selectors.search.successAlert, { timeout: 30000 });
         const alertText = await this.page.evaluate(el => el.innerText, alert);
-        
+
         const folioMatch = alertText.match(/folio de descarga:?\s*([A-F0-9\-]{36})/i);
-        
+
         if (!folioMatch || !folioMatch[1]) {
             Logger.error('No se pudo localizar el folio de descarga en el mensaje de éxito.', { alertText });
             throw new SatNavigationError('Descarga solicitada, pero no se recuperó el folio de seguimiento.', 'Regex de folio falló sobre el texto del alert');

@@ -1,5 +1,27 @@
 ## [Unreleased]
 
+## [0.6.0] - 2026-03-29
+
+### Added
+- Created a robust, generic `TableComponent` with support for server-side/local sorting, filtering, and pagination.
+- Implemented a premium `LoaderComponent` featuring a minimalist "Dynamic Island" aesthetic.
+- Added `CompaniesController` on the backend and `CompaniesService` on the frontend for client management.
+- Registered `/api/companies` endpoint in server routes.
+- Expanded `ButtonComponent` with multiple design variants: `primary`, `secondary`, `outline`, `danger`, `ghost`, `success`, `warning`, and `glass`.
+
+### Changed
+- Refactored `PortalLayout` to support dynamic page titles using modern Angular signals and smooth CSS transitions.
+- Standardized UI across `Clients` and `Invoices` by replacing manual button implementations with the generic `app-button`.
+- Completely refactored `ClientsComponent` to use the new generic `TableComponent`, simplifying logic and improving maintainability.
+- Updated `docker-compose.yml` to include a persistent volume for server logs.
+- Enhanced `SatScraperService` with improved logging, selector timeouts, and more resilient navigation logic.
+
+### Fixed
+- Resolved Angular compiler warning **NG0956** by correcting the `track` expression in `portal-layout.html`.
+- Cleaned up **NG8113** warning by removing unused `LoaderComponent` dependencies in `clients.ts`.
+- Optimized DOM performance by ensuring efficient rendering tracker usage in lists.
+
+
 ## [0.5.0] - 2026-03-13
 
 ### Added

@@ -1,0 +1,17 @@
+@if (overlay()) {
+  <div class="loader-overlay" @fadeInOut>
+    <div class="loader-island">
+      <div [class]="'loader-ring ' + size()"></div>
+      @if (message()) {
+        <p class="loader-message">{{ message() }}</p>
+      }
+    </div>
+  </div>
+} @else {
+  <div [class]="'loader-inline ' + size()" @fadeInOut>
+    <div [class]="'loader-ring ' + size()"></div>
+    @if (message()) {
+      <p class="loader-message">{{ message() }}</p>
+    }
+  </div>
+}
